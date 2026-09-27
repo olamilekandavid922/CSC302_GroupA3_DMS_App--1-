@@ -99,17 +99,37 @@ if (!dbExisted) {
   insertUser.run("System Administrator", "admin@lawfirm.test", adminHash, "admin");
   insertUser.run("Demo Lawyer", "lawyer@lawfirm.test", lawyerHash, "lawyer");
 
-  const clientId = db
-    .prepare(`INSERT INTO clients (name, contact_info, address) VALUES (?, ?, ?)`)
-    .run("Adewale Ventures Ltd.", "adewale.ventures@example.com", "Ibadan, Oyo State").lastInsertRowid;
+   const insertClient = db.prepare(
+     `INSERT INTO clients (name, contact_info, address) VALUES (?, ?, ?)`
+   );
+   const insertCase = db.prepare(
+     `INSERT INTO cases (client_id, case_number, title, status) VALUES (?, ?, ?, ?)`
+   );
 
-  db.prepare(
-    `INSERT INTO cases (client_id, case_number, title, status) VALUES (?, ?, ?, ?)`
-  ).run(clientId, "UI/LAW/2026/001", "Adewale Ventures vs. Lagos Textiles Ltd.", "open");
+   const seedData = [
+     { client: ["Adewale Ventures Ltd.", "adewale.ventures@example.com", "Ibadan, Oyo State"],
+       case: ["UI/LAW/2026/001", "Adewale Ventures vs. Lagos Textiles Ltd.", "open"] },
+     { client: ["Bankole & Sons Trading Co.", "info@bankolesons.ng", "Dugbe, Ibadan"],
+       case: ["UI/LAW/2026/002", "Bankole & Sons vs. Federal Inland Revenue Service", "pending"] },
+     { client: ["Mrs. Folake Adeyemi", "folake.adeyemi@email.com", "Bodija, Ibadan"],
+       case: ["UI/LAW/2026/003", "In the Matter of the Will of the Late Mr. S. Adeyemi", "open"] },
+     { client: ["Ibadan Poly Manufacturing Ltd.", "legal@ibadanpoly.ng", "Ring Road, Ibadan"],
+       case: ["UI/LAW/2026/004", "Ibadan Poly Manufacturing vs. Kwara Logistics Ltd. (Breach of Contract)", "open"] },
+     { client: ["Chief Emeka Okonkwo Estate", "estate.okonkwo@email.com", "Iwo Road, Ibadan"],
+       case: ["UI/LAW/2026/005", "Estate of Chief E. Okonkwo — Probate Proceedings", "closed"] },
+     { client: ["Greenfield Properties Ltd.", "contact@greenfieldprop.ng", "Ring Road, Ibadan"],
+       case: ["UI/LAW/2026/006", "Greenfield Properties vs. Oyo State Ministry of Lands", "pending"] },
+   ];
 
-  console.log("Database created and seeded.");
-  console.log("  Admin login:  admin@lawfirm.test / Admin@123");
-  console.log("  Lawyer login: lawyer@lawfirm.test / Lawyer@123");
+   for (const { client, case: caseInfo } of seedData) {
+     const clientId = insertClient.run(...client).lastInsertRowid;
+     insertCase.run(clientId, ...caseInfo);
+   }
+
+   console.log("Database created and seeded.");
+   console.log("  Admin login:  admin@lawfirm.test / Admin@123");
+   console.log("  Lawyer login: lawyer@lawfirm.test / Lawyer@123");
+   console.log(`  Seeded ${seedData.length} clients and cases.`);
 }
 
 module.exports = db;
