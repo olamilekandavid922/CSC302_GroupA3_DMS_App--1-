@@ -1,0 +1,24 @@
+/* public/css/style.css */
+body {
+  background-color: #f7f9fc;
+}
+.navbar-brand {
+  letter-spacing: 0.3px;
+}
+.card {
+  border: 1px solid #e3e6ec;
+}
+.stat-card {
+  border-left: 4px solid #1e2761;
+}
+.table thead th {
+  background-color: #1e2761;
+  color: #fff;
+  border-color: #1e2761;
+}
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}

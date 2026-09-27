@@ -1,0 +1,29 @@
+<%- include('partials/header') %>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3 class="fw-bold m-0" style="color:#1e2761;">Clients</h3>
+  <% if (['admin','lawyer'].includes(currentUser.role)) { %>
+    <a href="/clients/new" class="btn btn-sm btn-primary" style="background-color:#1e2761;border-color:#1e2761;">+ Add Client</a>
+  <% } %>
+</div>
+
+<div class="card shadow-sm">
+  <table class="table mb-0">
+    <thead><tr><th>Name</th><th>Contact</th><th>Address</th><th></th></tr></thead>
+    <tbody>
+      <% if (clients.length === 0) { %>
+        <tr><td colspan="4" class="text-muted text-center py-3">No clients yet.</td></tr>
+      <% } %>
+      <% clients.forEach(c => { %>
+        <tr>
+          <td><a href="/clients/<%= c.client_id %>"><%= c.name %></a></td>
+          <td><%= c.contact_info || '—' %></td>
+          <td><%= c.address || '—' %></td>
+          <td><a href="/clients/<%= c.client_id %>" class="small">View cases →</a></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('partials/footer') %>

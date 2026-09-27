@@ -1,0 +1,39 @@
+<%- include('partials/header') %>
+
+<div class="mb-3">
+  <a href="/clients" class="small text-muted">&larr; Back to Clients</a>
+</div>
+
+<h3 class="fw-bold mb-1" style="color:#1e2761;"><%= client.name %></h3>
+<p class="text-muted mb-4">
+  <%= client.contact_info || 'No contact info on file' %>
+  <% if (client.address) { %> &middot; <%= client.address %><% } %>
+</p>
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+  <h5 class="fw-bold m-0">Cases</h5>
+  <% if (['admin','lawyer'].includes(currentUser.role)) { %>
+    <a href="/cases/new" class="btn btn-sm btn-outline-primary">+ Add Case</a>
+  <% } %>
+</div>
+
+<div class="card shadow-sm">
+  <table class="table mb-0">
+    <thead><tr><th>Case #</th><th>Title</th><th>Status</th><th>Opened</th></tr></thead>
+    <tbody>
+      <% if (cases.length === 0) { %>
+        <tr><td colspan="4" class="text-muted text-center py-3">No cases for this client yet.</td></tr>
+      <% } %>
+      <% cases.forEach(c => { %>
+        <tr>
+          <td><a href="/cases/<%= c.case_id %>"><%= c.case_number %></a></td>
+          <td><%= c.title %></td>
+          <td><span class="badge bg-<%= c.status === 'open' ? 'success' : c.status === 'pending' ? 'warning' : 'secondary' %>"><%= c.status %></span></td>
+          <td class="small text-muted"><%= c.opened_date %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('partials/footer') %>

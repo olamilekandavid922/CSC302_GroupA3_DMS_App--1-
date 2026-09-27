@@ -1,0 +1,27 @@
+<%- include('partials/header') %>
+
+<h3 class="fw-bold mb-4" style="color:#1e2761;">Add Client</h3>
+
+<div class="card shadow-sm" style="max-width:560px;">
+  <div class="card-body">
+    <% if (error) { %><div class="alert alert-danger py-2"><%= error %></div><% } %>
+    <form method="POST" action="/clients">
+      <div class="mb-3">
+        <label class="form-label">Client name</label>
+        <input type="text" name="name" class="form-control" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Contact info</label>
+        <input type="text" name="contact_info" class="form-control" placeholder="Email or phone number" />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Address</label>
+        <textarea name="address" class="form-control" rows="2"></textarea>
+      </div>
+      <button class="btn btn-primary" style="background-color:#1e2761;border-color:#1e2761;">Save Client</button>
+      <a href="/clients" class="btn btn-link">Cancel</a>
+    </form>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

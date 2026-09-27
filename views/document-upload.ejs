@@ -1,0 +1,43 @@
+<%- include('partials/header') %>
+
+<h3 class="fw-bold mb-4" style="color:#1e2761;">Upload Document</h3>
+
+<div class="card shadow-sm" style="max-width:640px;">
+  <div class="card-body">
+    <% if (error) { %><div class="alert alert-danger py-2"><%= error %></div><% } %>
+    <form method="POST" action="/documents/upload" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label class="form-label">Case</label>
+        <select name="case_id" class="form-select" required>
+          <option value="" disabled selected>Select a case</option>
+          <% cases.forEach(c => { %>
+            <option value="<%= c.case_id %>"><%= c.case_number %> — <%= c.title %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Document title</label>
+        <input type="text" name="title" class="form-control" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Category</label>
+        <select name="category" class="form-select">
+          <option value="contract">Contract</option>
+          <option value="affidavit">Affidavit</option>
+          <option value="pleading">Pleading / Court filing</option>
+          <option value="correspondence">Correspondence</option>
+          <option value="general" selected>General</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">File</label>
+        <input type="file" name="file" class="form-control" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" required />
+        <div class="form-text">PDF, DOC, DOCX, JPG, or PNG — max 20MB.</div>
+      </div>
+      <button class="btn btn-primary" style="background-color:#1e2761;border-color:#1e2761;">Upload</button>
+      <a href="/documents" class="btn btn-link">Cancel</a>
+    </form>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,30 @@
+<%- include('partials/header') %>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3 class="fw-bold m-0" style="color:#1e2761;">Cases</h3>
+  <% if (['admin','lawyer'].includes(currentUser.role)) { %>
+    <a href="/cases/new" class="btn btn-sm btn-primary" style="background-color:#1e2761;border-color:#1e2761;">+ Add Case</a>
+  <% } %>
+</div>
+
+<div class="card shadow-sm">
+  <table class="table mb-0">
+    <thead><tr><th>Case #</th><th>Title</th><th>Client</th><th>Status</th><th>Opened</th></tr></thead>
+    <tbody>
+      <% if (cases.length === 0) { %>
+        <tr><td colspan="5" class="text-muted text-center py-3">No cases yet.</td></tr>
+      <% } %>
+      <% cases.forEach(c => { %>
+        <tr>
+          <td><a href="/cases/<%= c.case_id %>"><%= c.case_number %></a></td>
+          <td><%= c.title %></td>
+          <td><%= c.client_name %></td>
+          <td><span class="badge bg-<%= c.status === 'open' ? 'success' : c.status === 'pending' ? 'warning' : 'secondary' %>"><%= c.status %></span></td>
+          <td class="small text-muted"><%= c.opened_date %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('partials/footer') %>

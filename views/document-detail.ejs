@@ -1,0 +1,60 @@
+<%- include('partials/header') %>
+
+<div class="mb-3">
+  <a href="/documents" class="small text-muted">&larr; Back to Documents</a>
+</div>
+
+<div class="d-flex justify-content-between align-items-start mb-1">
+  <div>
+    <h3 class="fw-bold mb-1" style="color:#1e2761;"><%= document.title %></h3>
+    <p class="text-muted mb-0">
+      Case <a href="/cases/<%= document.case_id %>"><%= document.case_number %> — <%= document.case_title %></a>
+      &middot; Uploaded by <%= document.uploaded_by_name %> &middot; <%= document.upload_date %>
+    </p>
+  </div>
+  <span class="badge bg-light text-dark border fs-6"><%= document.category %></span>
+</div>
+
+<div class="d-flex gap-2 my-3">
+  <a href="/documents/<%= document.document_id %>/download" class="btn btn-sm btn-primary" style="background-color:#1e2761;border-color:#1e2761;">Download current version (v<%= document.current_version %>)</a>
+  <% if (['admin','lawyer','paralegal'].includes(currentUser.role)) { %>
+    <a href="/documents/<%= document.document_id %>/new-version" class="btn btn-sm btn-outline-primary">Upload new version</a>
+  <% } %>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header fw-bold">Version History</div>
+      <ul class="list-group list-group-flush">
+        <% versions.forEach(v => { %>
+          <li class="list-group-item d-flex justify-content-between">
+            <span>Version <%= v.version_number %></span>
+            <span class="small text-muted"><%= v.modified_by_name %> &middot; <%= v.modified_at %></span>
+          </li>
+        <% }) %>
+      </ul>
+    </div>
+  </div>
+
+  <% if (canSeeAuditLog) { %>
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header fw-bold">Access Audit Trail</div>
+      <ul class="list-group list-group-flush" style="max-height: 320px; overflow-y: auto;">
+        <% if (logs.length === 0) { %>
+          <li class="list-group-item text-muted">No activity logged yet.</li>
+        <% } %>
+        <% logs.forEach(l => { %>
+          <li class="list-group-item d-flex justify-content-between">
+            <span class="text-capitalize"><%= l.action %></span>
+            <span class="small text-muted"><%= l.user_name %> &middot; <%= l.timestamp %></span>
+          </li>
+        <% }) %>
+      </ul>
+    </div>
+  </div>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>

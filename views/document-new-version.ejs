@@ -1,0 +1,20 @@
+<%- include('partials/header') %>
+
+<h3 class="fw-bold mb-1" style="color:#1e2761;">Upload New Version</h3>
+<p class="text-muted mb-4"><%= document.title %> (currently v<%= document.current_version %>)</p>
+
+<div class="card shadow-sm" style="max-width:560px;">
+  <div class="card-body">
+    <% if (error) { %><div class="alert alert-danger py-2"><%= error %></div><% } %>
+    <form method="POST" action="/documents/<%= document.document_id %>/new-version" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label class="form-label">New file (becomes v<%= document.current_version + 1 %>)</label>
+        <input type="file" name="file" class="form-control" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" required />
+      </div>
+      <button class="btn btn-primary" style="background-color:#1e2761;border-color:#1e2761;">Save New Version</button>
+      <a href="/documents/<%= document.document_id %>" class="btn btn-link">Cancel</a>
+    </form>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

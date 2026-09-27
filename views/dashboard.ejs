@@ -1,0 +1,71 @@
+<%- include('partials/header') %>
+
+<h3 class="fw-bold mb-4" style="color:#1e2761;">Dashboard</h3>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-4">
+    <div class="card stat-card shadow-sm">
+      <div class="card-body">
+        <div class="text-muted small">Clients</div>
+        <div class="fs-2 fw-bold"><%= stats.clients %></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card stat-card shadow-sm">
+      <div class="card-body">
+        <div class="text-muted small">Open Cases</div>
+        <div class="fs-2 fw-bold"><%= stats.openCases %></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card stat-card shadow-sm">
+      <div class="card-body">
+        <div class="text-muted small">Documents</div>
+        <div class="fs-2 fw-bold"><%= stats.documents %></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-<%= recentActivity.length ? 6 : 12 %>">
+    <div class="card shadow-sm">
+      <div class="card-header fw-bold">Recently Uploaded Documents</div>
+      <ul class="list-group list-group-flush">
+        <% if (recentDocuments.length === 0) { %>
+          <li class="list-group-item text-muted">No documents uploaded yet.</li>
+        <% } %>
+        <% recentDocuments.forEach(doc => { %>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <a href="/documents/<%= doc.document_id %>"><%= doc.title %></a>
+              <div class="small text-muted">Case <%= doc.case_number %> &middot; by <%= doc.uploaded_by_name %></div>
+            </div>
+            <span class="badge bg-light text-dark border"><%= doc.category %></span>
+          </li>
+        <% }) %>
+      </ul>
+    </div>
+  </div>
+
+  <% if (recentActivity.length) { %>
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header fw-bold">Recent Access Activity</div>
+      <ul class="list-group list-group-flush">
+        <% recentActivity.forEach(log => { %>
+          <li class="list-group-item">
+            <span class="text-capitalize fw-semibold"><%= log.action %></span>
+            &mdash; <%= log.document_title %>
+            <div class="small text-muted"><%= log.user_name %> &middot; <%= log.timestamp %></div>
+          </li>
+        <% }) %>
+      </ul>
+    </div>
+  </div>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>

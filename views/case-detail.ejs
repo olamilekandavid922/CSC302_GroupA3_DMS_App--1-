@@ -1,0 +1,54 @@
+<%- include('partials/header') %>
+
+<div class="mb-3">
+  <a href="/cases" class="small text-muted">&larr; Back to Cases</a>
+</div>
+
+<div class="d-flex justify-content-between align-items-start mb-1">
+  <div>
+    <h3 class="fw-bold mb-1" style="color:#1e2761;"><%= theCase.title %></h3>
+    <p class="text-muted mb-0">
+      Case #<%= theCase.case_number %> &middot; Client: <a href="/clients/<%= theCase.client_id %>"><%= theCase.client_name %></a>
+    </p>
+  </div>
+  <span class="badge fs-6 bg-<%= theCase.status === 'open' ? 'success' : theCase.status === 'pending' ? 'warning' : 'secondary' %>"><%= theCase.status %></span>
+</div>
+
+<% if (['admin','lawyer'].includes(currentUser.role)) { %>
+<form method="POST" action="/cases/<%= theCase.case_id %>/status" class="d-flex gap-2 align-items-center my-3">
+  <label class="small text-muted mb-0">Update status:</label>
+  <select name="status" class="form-select form-select-sm w-auto">
+    <option value="open" <%= theCase.status === 'open' ? 'selected' : '' %>>Open</option>
+    <option value="pending" <%= theCase.status === 'pending' ? 'selected' : '' %>>Pending</option>
+    <option value="closed" <%= theCase.status === 'closed' ? 'selected' : '' %>>Closed</option>
+  </select>
+  <button class="btn btn-sm btn-outline-primary">Update</button>
+</form>
+<% } %>
+
+<div class="d-flex justify-content-between align-items-center mt-4 mb-2">
+  <h5 class="fw-bold m-0">Documents</h5>
+  <a href="/documents/upload" class="btn btn-sm btn-outline-primary">+ Upload Document</a>
+</div>
+
+<div class="card shadow-sm">
+  <table class="table mb-0">
+    <thead><tr><th>Title</th><th>Category</th><th>Version</th><th>Uploaded by</th><th>Date</th></tr></thead>
+    <tbody>
+      <% if (documents.length === 0) { %>
+        <tr><td colspan="5" class="text-muted text-center py-3">No documents for this case yet.</td></tr>
+      <% } %>
+      <% documents.forEach(d => { %>
+        <tr>
+          <td><a href="/documents/<%= d.document_id %>"><%= d.title %></a></td>
+          <td><span class="badge bg-light text-dark border"><%= d.category %></span></td>
+          <td>v<%= d.current_version %></td>
+          <td><%= d.uploaded_by_name %></td>
+          <td class="small text-muted"><%= d.upload_date %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('partials/footer') %>

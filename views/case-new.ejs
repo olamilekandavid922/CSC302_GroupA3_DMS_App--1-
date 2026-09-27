@@ -1,0 +1,40 @@
+<%- include('partials/header') %>
+
+<h3 class="fw-bold mb-4" style="color:#1e2761;">Add Case</h3>
+
+<div class="card shadow-sm" style="max-width:560px;">
+  <div class="card-body">
+    <% if (error) { %><div class="alert alert-danger py-2"><%= error %></div><% } %>
+    <form method="POST" action="/cases">
+      <div class="mb-3">
+        <label class="form-label">Client</label>
+        <select name="client_id" class="form-select" required>
+          <option value="" disabled selected>Select a client</option>
+          <% clients.forEach(c => { %>
+            <option value="<%= c.client_id %>"><%= c.name %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Case number</label>
+        <input type="text" name="case_number" class="form-control" placeholder="e.g. UI/LAW/2026/002" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Case title</label>
+        <input type="text" name="title" class="form-control" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Status</label>
+        <select name="status" class="form-select">
+          <option value="open" selected>Open</option>
+          <option value="pending">Pending</option>
+          <option value="closed">Closed</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" style="background-color:#1e2761;border-color:#1e2761;">Save Case</button>
+      <a href="/cases" class="btn btn-link">Cancel</a>
+    </form>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
